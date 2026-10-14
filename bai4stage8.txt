@@ -1,0 +1,29 @@
+
+
+1. So sánh hai toán tử > và >>
+
+| Tiêu chí | Dấu > | Dấu >> |
+| Cách hoạt động | Ghi kết quả vào file và ghi đè dữ liệu cũ | Ghi thêm dữ liệu vào cuối file |
+| Mất dữ liệu | Có thể mất dữ liệu cũ vì bị ghi đè | Không làm mất dữ liệu cũ |
+| Sử dụng | Phù hợp khi tạo báo cáo mới cho ca sáng | Phù hợp khi theo dõi log liên tục 24/7 |
+| Encoding | Mặc định của Out-File là UTF-16 | Cũng sử dụng encoding mặc định của Out-File |
+
+2. Bẫy dữ liệu
+
+Nếu file daily_report.txt đã có báo cáo của 30 ngày trước mà An dùng nhầm dấu > thì dữ liệu cũ sẽ bị ghi đè. Khi đó, báo cáo của 30 ngày trước có thể bị mất, chỉ còn kết quả mới ghi vào file.
+
+3. Lựa chọn giải pháp
+
+Theo em, nên dùng dấu >> để lưu các lỗi phát sinh liên tục trong ngày vì nó ghi thêm dữ liệu vào cuối file và giữ lại nội dung cũ.
+
+Câu lệnh:
+
+powershell
+Get-Content server.log | Select-String "ERROR" >> daily_report.txt
+
+
+Nếu muốn sử dụng encoding UTF-8 thì có thể dùng lệnh:
+
+powershell
+Get-Content server.log | Select-String "ERROR" | Out-File -FilePath daily_report.txt -Append -Encoding utf8
+
